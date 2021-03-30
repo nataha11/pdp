@@ -7,19 +7,21 @@ typedef word Adress;
 
 #define MEMSIZE (64 * 1024)
 
-byte mem [MEMSIZE];  //global
+byte mem [MEMSIZE];
 
 byte b_read(Adress adr);
 void b_write (Adress adr, byte b);
-
 word w_read(Adress adr);
 void w_write(Adress adr, word w);
+
+void load_file();
 
 
 void test_mem();
 
 int main() {
 	test_mem ();
+	load_file("test.o");
 	return 0;
 }
 
@@ -69,5 +71,23 @@ void w_write(Adress adr, word w) {
 	mem[adr + 1] = (byte)(w >> 8);
 	mem[adr] = (byte)w;
 	
+}
+
+void load_file(const char * filname) {
+	FILE * fil = fopen(filname, "rb");
+	Adress a;
+	byte c;
+	word n;
+
+	while(2 == fscanf(fil, "%x%x", &a, &n)) {
+		printf("read of size %u\n", n);
+		for (unsigned int i = 0; i < n; i++) {
+				fscanf(fil, "%hhx", &c);
+				b_write(a + i, c);
+				printf("byte read: %hhx\n", c);
+		}
+	}
+	printf("\n");
+	fclose(fil);
 }
 
