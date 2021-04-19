@@ -18,13 +18,13 @@ word w_read(Adress adr);
 void w_write(Adress adr, word w);
 void test_mem();
 
-void load_file();
+void load_file(int argc, char const * argv[]);
 
 void mem_dump(Adress start, word n);
 
-int main() {
-
-	test_mem ();
+int main(int argc, char const * argv[]) {
+	load_file(argc, argv);
+	test_mem();
 	return 0;
 }
 
@@ -73,8 +73,6 @@ void test_mem() {
 	printf("ww/wr \t %016hx=%016hx\n", neg_w, res);
 	assert(neg_w == res);
 
-	load_file("test.o");
-
 	mem_dump(0x40, 4);
 }
 
@@ -87,38 +85,45 @@ void b_write (Adress adr, byte b) {
 }
 
 word w_read(Adress a) {
+	assert(a % 2 == 0);
 	word w = ((word)mem[a + 1]) << 8;
 	w = w | mem[a];
 	return w;
 }
 
 void w_write(Adress adr, word w) {
+	assert(adr % 2 == 0);
 	mem[adr] = w & 0xFF;//извлекаем первые 8 бит
 	mem[adr + 1] = (w >> 8) & 0xFF;//извлекаем следующие 8 бит
 }
 
-void load_file(const char * filname) {
-	FILE * fil = fopen(filname, "rb");
-	if (fil == NULL) {
-		printf("Oooops! Error!\n");
-		perror(filname);
-		exit(errno);
+void load_file(int argc, char const * argv[]) {
+	FILE *fin;
+	if (argc < 2) {
+		printf("Not enough arguments\n");
+		exit(1);
+	}
+
+	fin = fopen(argv[1], "rb");
+	if (fin == NULL) {
+		printf("Error: file %s not opened\n", argv[1]);
+		exit(1);
 	}
 
 	Adress a;
 	byte c;
 	word n;
-
-	while(2 == fscanf(fil, "%hx%hx", &a, &n)) {
+	printf("\t load_file test:\n");
+	while (2 == fscanf(fin, "%hx%hx", &a, &n)) {
 		printf("read of size %u\n", n);
 		for (unsigned int i = 0; i < n; i++) {
-				fscanf(fil, "%hhx", &c);
+				fscanf(fin, "%hhx", &c);
 				b_write(a + i, c);
 				printf("byte read: %hhx\n", c);
 		}
 	}
 	printf("\n");
-	fclose(fil);
+	fclose(fin);
 }
 
 void mem_dump(Adress start, word n) {
