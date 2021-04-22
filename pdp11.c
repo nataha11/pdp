@@ -104,7 +104,7 @@ void load_file(int argc, char const * argv[]) {
 		exit(1);
 	}
 
-	fin = fopen(argv[1], "rb");
+	fin = fopen(argv[1], "r");
 	if (fin == NULL) {
 		printf("Error: file %s not opened\n", argv[1]);
 		exit(1);
