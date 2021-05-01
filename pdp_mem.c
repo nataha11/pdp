@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <errno.h>
-#include <stdint.h>
-#include <stdarg.h>
-
 #include "pdp_mem.h"
-
-byte mem [MEMSIZE];
-
-int main(int argc, char const * argv[]) {
-	load_file(argc, argv);
-	test_mem();
-	return 0;
-}
 
 void test_mem() {
 	byte b0 = 0x0a;
@@ -119,16 +104,3 @@ void mem_dump(Adress start, word n) {
 		printf("%06o : %06o\n", start + i, w_read(start + i));
 	}
 }
-
-void trace(int )
-
-void print_usage(char * str) {
-
-	printf("\t Usage: pdp11.exe [options] [file]\n");
-	printf("\t Options:\n");
-	printf("-d \t print debug \n");
-	printf("-t \t print trace \n");
-}
-
-
-
