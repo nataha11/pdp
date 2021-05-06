@@ -4,8 +4,6 @@ typedef uint8_t byte;   //8 bit
 typedef uint16_t word;    //16 bit
 typedef word Adress;
 
-#define MEMSIZE (64 * 1024)
-
 byte b_read(Adress adr);
 void b_write (Adress adr, byte b);
 word w_read(Adress adr);

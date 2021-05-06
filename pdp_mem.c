@@ -1,5 +1,7 @@
 #include "pdp_mem.h"
 
+byte mem [MEMSIZE];
+
 void test_mem() {
 	byte b0 = 0x0a;
 	//test: write byte, read byte
