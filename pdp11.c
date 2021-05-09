@@ -16,7 +16,8 @@
 
 int main(int argc, char const * argv[]) {
 	load_file(argc, argv);
-	test_mem();
+	//test_mem();
+	run();
 	return 0;
 }
 

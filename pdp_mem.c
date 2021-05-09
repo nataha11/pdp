@@ -74,17 +74,17 @@ void w_write(Adress adr, word w) {
 void load_file(int argc, char const * argv[]) {
 	FILE *fin;
 	if (argc < 2) {
-		printf("Not enough arguments\n");
+		fprintf(stderr, "Usage: %s filename\n", argv[0]);
 		exit(1);
 	}
 
 	fin = fopen(argv[1], "r");
 	if (fin == NULL) {
-		printf("Error: file %s not opened\n", argv[1]);
+		perror("File not opened");
 		exit(1);
 	}
 
-	printf("\t load_file test:\n");
+	trace("\t load_file trace:\n");
 	Adress a;
 	byte c;
 	word n;
@@ -94,7 +94,7 @@ void load_file(int argc, char const * argv[]) {
 		for (unsigned int i = 0; i < n; i++) {
 				fscanf(fin, "%hhx", &c);
 				b_write(a + i, c);
-				printf("byte read: %hhx\n", c);
+				printf("byte read: %02hhx\n", c);
 		}
 	}
 	printf("\n");

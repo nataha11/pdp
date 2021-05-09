@@ -11,16 +11,16 @@ typedef struct {
 } Command;
 
 void do_halt() {
-	trace("YOU DIED\n");
+	trace("\nHALT END ^_^\n");
 	exit(0);
 }
 
 void do_mov() {
-
+	return;
 }
 
 void do_add() {
-
+	return;
 }
 
 void do_nothing() {
@@ -28,7 +28,7 @@ void do_nothing() {
 }
 
 void do_unknown() {
-
+	return;
 }
 
 Command cmd[] = {
@@ -40,19 +40,22 @@ Command cmd[] = {
 
 void run() {
 	pc = 01000;
-	int i = 0;
+
 	while(1) {
 		word w = w_read(pc);
 		trace("%06o %06o: ", pc, w);
 		pc += 2;
-		do {
-			//trace("%s, cmd mask: %06o, word: %06o, opcode: %06o, w & mask: %06o\n", cmd[i].name, cmd[i].mask, w, cmd[i].opcode, (w & cmd[i].mask));
+
+		for (int i = 0; cmd[i - 1].mask != 0000000; i++) {
 			if ((w & cmd[i].mask) == cmd[i].opcode) {
-			trace("%s", cmd[i].name);
-			cmd[i].do_func();
+				trace("%s", cmd[i].name);
+
+				// тут потом будет разбор аргументов
+
+				cmd[i].do_func();
+				trace("\n");
+				break;
+			}
 		}
-		i++;
-	} while ((w & cmd[i-1].mask) != cmd[i-1].opcode);
-		
 	}
 }
