@@ -6,3 +6,9 @@ void trace(const char * format, ...) {
 	vprintf(format, ap);
 	va_end(ap);
 }
+
+void trace_reg() {
+	for(int i = 0; i < 8; i ++)
+        trace("R%d:%06o ", i, reg[i]);
+    trace("\n");
+}
