@@ -90,19 +90,19 @@ void load_file(int argc, char const * argv[]) {
 	word n;
 
 	while (2 == fscanf(fin, "%hx%hx", &a, &n)) {
-		printf("read of size %u\n", n);
+		trace("read of size %u\n", n);
 		for (unsigned int i = 0; i < n; i++) {
 				fscanf(fin, "%hhx", &c);
 				b_write(a + i, c);
-				printf("byte read: %02hhx\n", c);
+				trace("byte read: %02hhx\n", c);
 		}
 	}
-	printf("\n");
+	trace("\n");
 	fclose(fin);
 }
 
 void mem_dump(Adress start, word n) {
 	for (unsigned int i = 0; i < n; i += 2) {
-		printf("%06o : %06o\n", start + i, w_read(start + i));
+		trace("%06o : %06o\n", start + i, w_read(start + i));
 	}
 }
