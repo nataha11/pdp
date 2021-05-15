@@ -10,5 +10,5 @@ word w_read(Adress adr);
 void w_write(Adress adr, word w);
 void test_mem();
 
-void load_file(int argc, char const * argv[]);
+void load_file(int argc, char * argv[]);
 void mem_dump(Adress start, word n);

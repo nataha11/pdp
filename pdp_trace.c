@@ -1,6 +1,8 @@
 #include "pdp_trace.h"
 
 void trace(const char * format, ...) {
+	if(trace_is_on == 0)
+		return;
 	va_list ap;
 	va_start(ap, format);
 	vprintf(format, ap);

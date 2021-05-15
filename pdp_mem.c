@@ -2,6 +2,8 @@
 
 byte mem [MEMSIZE];
 
+int trace_is_on = 0;
+
 void test_mem() {
 	byte b0 = 0x0a;
 	//test: write byte, read byte
@@ -79,14 +81,23 @@ void w_write(Adress adr, word w) {
 
 }
 
-void load_file(int argc, char const * argv[]) {
+void load_file(int argc, char * argv[]) {
 	FILE *fin;
 	if (argc < 2) {
 		fprintf(stderr, "Usage: %s filename\n", argv[0]);
 		exit(1);
 	}
 
-	fin = fopen(argv[1], "r");
+	int _flag;
+	while((_flag = getopt(argc, argv, "t")) != -1) {
+		if(_flag == (int)'t') {
+			trace_is_on = 1;
+			printf("Tracing is on\n");
+
+		}
+	}
+
+	fin = fopen(argv[1 + trace_is_on], "r");
 	if (fin == NULL) {
 		perror("File not opened");
 		exit(1);
