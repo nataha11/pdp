@@ -1,29 +1,12 @@
-#include <string.h>
 #include "pdp_run.h"
 
-word reg[8];
-#define pc reg[7]
-
-typedef struct {
-	Arg ss;
-	Arg dd;
-	byte byte_or_word;
-} Params_do;
-
-typedef struct {
-	word mask;
-	word opcode;
-	char * name;
-	void (* do_func)(void);
-} Command;
-
 void do_halt() {
-	trace("\nHALT END ^_^\n");
+	trace_reg();
+	trace("HALT END ^_^\n");
 	exit(0);
 }
 
 void do_mov() {
-	//trace("dd.adr = %06o, ss.val = %06o, byte_or_word = %d\n", dd.adr, ss.val, byte_or_word);
 	if(byte_or_word == W)
 		w_write(dd.adr, ss.val);
 	else if(byte_or_word == B)
@@ -32,10 +15,14 @@ void do_mov() {
 }
 
 void do_add() {
+	word tmp = w_read(dd.adr);
+	tmp += ss.val;
+	w_write(dd.adr, tmp);
 	return;
 }
 
 void do_nothing() {
+	trace("do_nothingggggggg\n");
 	return;
 }
 
@@ -63,29 +50,29 @@ void run() {
 		int i = 0;
 
 		do {
-			trace("i1 = %d\n", i);
 			if ((w & cmd[i].mask) == cmd[i].opcode) {
-				trace("i2 = %d, %s ", i, cmd[i].name);
+				trace("%s ", cmd[i].name);
 
 				byte_or_word = ((cmd[i].opcode) >> 15) & 1; //byte or word cmd
-				ss = get_mr(w >> 6);
-				dd = get_mr(w);
-				trace("ss.val = %06hhx, ss.adr = %06hhx, dd.val = %06hhx, dd.adr = %06hhx\n", ss.val, ss.adr, dd.val, dd.adr);
-
-				cmd[i].do_func();
+				if(cmd[i].opcode != 0000000) {
+					ss = get_mr(w >> 6);
+					dd = get_mr(w);
+				}
 				trace("\n");
+				cmd[i].do_func();
+				trace_reg();
 				break;
 			}
 			i++;
-		} while (cmd[i-1].mask != 0000000);  //пока не наткнемся на unknown
+		} while (cmd[i - 1].mask != 0000000);  //пока не наткнемся на unknown
 	}
 }
 
 Arg get_mr(word w) {
 	Arg res;
-	int r = w & 7; //номер регистра (последние 3 бита)
+	int r = w & 7;//номер регистра (последние 3 бита)
 	int mode = (w >> 3) & 7; //номер моды
-	//trace("\nmode = %d\n", mode);
+
 	switch(mode) {
 		case 0:			//R3
 			res.adr = r;
@@ -122,6 +109,5 @@ Arg get_mr(word w) {
 			fprintf(stderr, "Mode %d not implemented yet\n", mode);
 			exit(1);
 	}
-	//trace("\nArg: res.val = %o, res.adr = %o\n", res.val, res.adr);
 	return res;
 }
