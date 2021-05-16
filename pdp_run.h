@@ -1,6 +1,6 @@
 #pragma once
 
-word reg[8];
+extern word reg[8];
 #define pc reg[7]
 
 typedef struct {
@@ -19,8 +19,5 @@ typedef struct { //argument SS or DD
 	word val;
 	word adr;
 } Arg;
-Arg ss, dd;
-
-byte byte_or_word = 0;
 
 Arg get_mr(word w); // get mode, register

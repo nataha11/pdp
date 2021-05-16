@@ -1,5 +1,12 @@
 #include "pdp_run.h"
 
+word reg[8];
+#define pc reg[7]
+
+Arg ss, dd;
+
+byte byte_or_word = 0;
+
 void do_halt() {
 	trace_reg();
 	trace("HALT END ^_^\n");
@@ -11,7 +18,6 @@ void do_mov() {
 		w_write(dd.adr, ss.val);
 	else if(byte_or_word == B)
 		b_write(dd.adr, ss.val);
-	return;
 }
 
 void do_add() {

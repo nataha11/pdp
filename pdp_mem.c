@@ -84,16 +84,15 @@ void w_write(Adress adr, word w) {
 void load_file(int argc, char * argv[]) {
 	FILE *fin;
 	if (argc < 2) {
-		fprintf(stderr, "Usage: %s filename\n", argv[0]);
+		fprintf(stderr, "Usage: %s [-t] filename\n", argv[0]);
 		exit(1);
 	}
-
+	//tracing
 	int _flag;
 	while((_flag = getopt(argc, argv, "t")) != -1) {
 		if(_flag == (int)'t') {
 			trace_is_on = 1;
 			printf("Tracing is on\n");
-
 		}
 	}
 
