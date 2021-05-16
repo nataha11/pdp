@@ -21,3 +21,4 @@ typedef struct { //argument SS or DD
 } Arg;
 
 Arg get_mr(word w); // get mode, register
+word get_r(word w);

@@ -64,7 +64,7 @@ word w_read(Adress a) {
 	if(a < 8) {
 		return reg[a];
 	}
-	assert(a % 2 == 0);
+	 assert(a % 2 == 0);
 	word w = ((word)mem[a + 1]) << 8;
 	w = w | mem[a];
 	return w;
@@ -74,7 +74,7 @@ void w_write(Adress adr, word w) {
 	if(adr < 8) {
 		reg[adr] = w;
 	} else {
-		assert(adr % 2 == 0);
+		//assert(adr % 2 == 0);
 		mem[adr] = w & 0xFF;//извлекаем первые 8 бит
 		mem[adr + 1] = (w >> 8) & 0xFF;//извлекаем следующие 8 бит
 	}
